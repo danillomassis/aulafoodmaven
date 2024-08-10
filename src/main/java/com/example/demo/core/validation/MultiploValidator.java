@@ -1,0 +1,30 @@
+package com.example.demo.core.validation;
+
+import java.math.BigDecimal;
+
+
+public class MultiploValidator implements javax.validation.ConstraintValidator<Multiplo, Number>{
+
+	private int numeroMultiplo;
+	
+	@Override
+	public void initialize(Multiplo constraintAnnotation) {
+		this.numeroMultiplo = constraintAnnotation.numero();
+	}
+	
+	@Override
+	public boolean isValid(Number value, javax.validation.ConstraintValidatorContext context) {
+		boolean valido = true;
+		
+		if (value != null) {
+			var valorDecimal = BigDecimal.valueOf(value.doubleValue());
+			var multiploDecimal = BigDecimal.valueOf(this.numeroMultiplo);
+			var resto = valorDecimal.remainder(multiploDecimal);
+			
+			valido = BigDecimal.ZERO.compareTo(resto) == 0;
+		}
+		
+		return valido;
+	}
+
+}
